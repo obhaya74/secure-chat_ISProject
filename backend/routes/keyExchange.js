@@ -3,6 +3,7 @@ const router = express.Router();
 const authVerify = require("../middleware/authVerify");
 const mongoose = require("mongoose");
 const KeyExchange = require("../models/KeyExchange");
+const { logEvent } = require("../utils/logger");
 
 /**
  * POST /api/key/request
@@ -39,6 +40,10 @@ router.post("/request", authVerify, async (req, res) => {
       status: "pending",
       logs: [{ at: new Date(), event: "request_created", by: senderId }],
     });
+logEvent("KEY_REQUEST_SENT", {
+    sender: senderId,
+    receiver: receiverId
+});
 
     await record.save();
 

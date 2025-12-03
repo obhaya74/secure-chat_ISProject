@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import {
   getIncomingRequests,
   acceptKeyRequest,
@@ -6,7 +7,8 @@ import {
 } from "../api/api";
 
 import { useChatStore } from "./useChatStore";
-
+//const { logEvent } = require("../utils/logger");
+const { logEvent }= require("../utils/logger")
 export const useKeyRequestStore = create((set, get) => ({
   requests: [],
   loading: false,

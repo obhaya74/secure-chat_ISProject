@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { logEvent } = require("../utils/logger");
 
 const User = require("../models/User");
 
@@ -24,7 +25,13 @@ router.post("/signup", async (req, res) => {
     });
 
     await newUser.save();
+    logEvent("AUTH_SIGNUP", {
+    userId: newUser._id,
+    username: newUser.username
+});
+
     res.json({ message: "User created successfully" });
+    
 
   } catch (err) {
     console.error("Signup error:", err); // <---- ADD THIS
@@ -72,6 +79,11 @@ router.post("/login", async (req, res) => {
     );
 
     console.log("✔ LOGIN SUCCESSFUL for:", user.username);
+logEvent("AUTH_LOGIN_SUCCESS", {
+    userId: user._id,
+    username: user.username,
+    ip: req.ip
+});
 
     res.json({
   message: "Login successful",
@@ -87,6 +99,11 @@ router.post("/login", async (req, res) => {
 
 
   } catch (err) {
+    logEvent("AUTH_LOGIN_FAILURE", {
+    username: req.body.username,
+    ip: req.ip
+});
+
     console.error("🔥 SERVER LOGIN ERROR:", err);
     res.status(500).json({ error: "Login failed", details: err.message });
   }

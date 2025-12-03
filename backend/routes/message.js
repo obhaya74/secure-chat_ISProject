@@ -4,7 +4,7 @@ const router = express.Router();
 const Message = require("../models/Message");
 const mongoose = require("mongoose");
 const authVerify = require("../middleware/authVerify");
-
+const { logEvent } = require("../utils/logger");
 // Multer for file uploads
 const multer = require("multer");
 const path = require("path");
@@ -71,6 +71,12 @@ if (existing) {
     });
 
     const saved = await msg.save();
+logEvent("MESSAGE_STORED", {
+    messageId: saved._id,
+    sender: sender,
+    receiver: receiver,
+    counter
+});
 
     // Populate usernames for frontend
     const populated = await Message.findById(saved._id)

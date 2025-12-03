@@ -39,6 +39,8 @@ export const getIncomingRequests = async () => {
       headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
     }
   );
+ 
+
   return res.data;
 };
 
@@ -54,6 +56,7 @@ export const acceptKeyRequest = async (requestId, receiverPubKeys) => {
       headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
     }
   );
+  
   return res.data;
 };
 

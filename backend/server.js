@@ -13,6 +13,7 @@ app.use("/api/messages", require("./routes/message"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/key", require("./routes/keyExchange"));   // <--- FIXED FILE NAME
 app.use('/uploads', express.static('uploads'));
+app.use("/api/client-log", require("./routes/clientLog"));
 
 // TEST ROUTE
 app.get("/", (req, res) => {
